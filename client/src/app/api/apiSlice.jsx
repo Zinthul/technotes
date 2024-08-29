@@ -31,7 +31,7 @@ const baseQueryWithReuth = async (args, api, extraOptions) => {
         } else {
 
             if (refreshResult?.error?.status === 403) {
-                refreshResult.error.data.message = 'Your login has expired. '
+                refreshResult.error.data.message = 'Your login has expired.'
             }
             return refreshResult
         }
