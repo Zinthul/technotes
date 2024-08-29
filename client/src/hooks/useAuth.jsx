@@ -13,7 +13,6 @@ const useAuth = () => {
                try {
                    const decoded = jwtDecode(token);
                    const { username, roles } = decoded.UserInfo || {}; 
-                   console.log('decoded:',decoded)
        
                    isManager = Array.isArray(roles) && roles.includes('Manager');
                    isAdmin = Array.isArray(roles) && roles.includes('Admin');

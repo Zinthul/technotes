@@ -6,13 +6,11 @@ import { memo } from 'react'
 
 const Note = ({ noteId }) => {
 
-    const note = useGetNotesQuery("noteslist", {
+    const { note } = useGetNotesQuery("notesList", {
         selectFromResult: ({ data }) => ({
             note: data?.entities[noteId]
-        })
+        }),
     })
-    // const note = useSelector(state => selectNoteById(state, noteId))
-
     const navigate = useNavigate()
 
     if (note) {
