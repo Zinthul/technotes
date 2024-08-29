@@ -1,8 +1,10 @@
 import React from 'react'
 import { useGetUsersQuery } from './usersApiSlice'
 import User from './User'
+import useTitle from '../../hooks/useTitle'
 
 const UsersList = () => {
+    useTitle('TN:M Users List')
 
     const {
         data: users,
