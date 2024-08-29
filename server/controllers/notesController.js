@@ -1,12 +1,11 @@
 const User = require("../models/User");
 const Note = require("../models/Note");
-const asyncHandler = require("express-async-handler");
 
 // @desc Get all notes
 // @route get /notes
 // @access Private
 
-const getAllNotes = asyncHandler(async (req, res) => {
+const getAllNotes = async (req, res) => {
     const notes = await Note.find().lean()
 
     // If no notes 
@@ -20,20 +19,20 @@ const getAllNotes = asyncHandler(async (req, res) => {
     }))
 
     res.json(notesWithUser)
-})
+}
   
   // @desc Create new note
   // @route get /notes
   // @access Private
   
-  const createNewNote = asyncHandler(async (req, res) => {
+  const createNewNote = async (req, res) => {
     const { user, title, text } = req.body
 
     if (!user || !title || !text) {
         return res.status(400).json({ message: "All fields required"})
     }
 
-    const duplicate = await Note.findOne({ title }).lean().exec()
+    const duplicate = await Note.findOne({ title }).collation({ locale: 'en', strength: 2}).lean().exec()
 
     if (duplicate) {
         return res.status(409).json({ message: 'Duplicate title'})
@@ -47,13 +46,13 @@ const getAllNotes = asyncHandler(async (req, res) => {
         return res.status(400).json({ message: 'Invalid note data received'})
     }
     
-  });
+  };
   
   // @desc Update a note
   // @route PATCH /notes
   // @access Private
   
-  const updateNote = asyncHandler(async (req, res) => {
+  const updateNote = async (req, res) => {
     const { id, user, title, text, completed } = req.body
 
     if (!id || !user || !title || !text || typeof completed !== 'boolean') {
@@ -68,7 +67,7 @@ const getAllNotes = asyncHandler(async (req, res) => {
     }
 
     // Check for duplicate title
-    const duplicate = await Note.findOne({ title }).lean().exec()
+    const duplicate = await Note.findOne({ title }).collation({ locale: 'en', strength: 2}).lean().exec()
 
     // Allow renaming of the original note 
     if (duplicate && duplicate?._id.toString() !== id) {
@@ -84,13 +83,13 @@ const getAllNotes = asyncHandler(async (req, res) => {
 
     res.json(`'${updatedNote.title}' updated`)
    
-  });
+  };
   
   // @desc Delete a note
   // @route DELETE /notes
   // @access Private
   
-  const deleteNote = asyncHandler(async (req, res) => {
+  const deleteNote = async (req, res) => {
     const { id } = req.body
 
     if (!id) {
@@ -109,7 +108,7 @@ const getAllNotes = asyncHandler(async (req, res) => {
 
     res.json(reply)
 
-  });
+  };
   
   module.exports = {
     getAllNotes,
